@@ -2,52 +2,58 @@ package stepdefinitions;
 
 import com.pages.LoginPage;
 import com.qa.factory.DriverFactory;
+import com.qa.util.ConfigReader;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 
+import java.util.Properties;
+
 public class LoginPageSteps {
 
-    private static String title;
     private final LoginPage loginPage = new LoginPage(DriverFactory.getDriver());
+
 
     @Given("user is on login page")
     public void user_is_on_login_page() throws InterruptedException {
-        DriverFactory.getDriver().get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-        Thread.sleep(6000);
+        DriverFactory.getDriver().get(ConfigReader.initProp().getProperty("qa_url"));
+        Thread.sleep(7000);
     }
 
-    @When("user gets the title of the page")
-    public void user_gets_the_title_of_the_page() {
-        title = loginPage.getLoginPageTitle();
-        System.out.println("Login page title is: " + title);
+    @When("user enters username")
+    public void user_enters_username() {
+        loginPage.enterUsername(ConfigReader.initProp().getProperty("username"));
     }
 
-    @Then("page title should be {string}")
-    public void page_title_should_be(String expectedTitleName) {
-        Assert.assertTrue(title.contains(expectedTitleName));
+    @When("user enters wrong username")
+    public void user_enters_wrong_username() {
+        loginPage.enterUsername(ConfigReader.initProp().getProperty("wrong_username"));
     }
 
-    @Then("forgot your password link should be displayed")
-    public void forgot_your_password_link_should_be_displayed() {
-        Assert.assertTrue(loginPage.isForgotPasswordLinkExist());
+    @When("user enters password")
+    public void user_enters_password() {
+       loginPage.enterPassword(ConfigReader.initProp().getProperty("password"));
     }
 
-    @When("user enters username {string}")
-    public void user_enters_username(String username) {
-        loginPage.enterUsername(username);
-    }
-
-    @When("user enters password {string}")
-    public void user_enters_password(String password) {
-        loginPage.enterPassword(password);
+    @When("user enters wrong password")
+    public void user_enters_wrong_password() {
+        loginPage.enterPassword(ConfigReader.initProp().getProperty("wrong_password"));
     }
 
     @When("user clicks on Login button")
-    public void user_clicks_on_login_button() {
+    public void user_clicks_on_login_button() throws InterruptedException {
         loginPage.clickLoginButton();
     }
 
+    @Then("desired page URL should be displayed")
+    public void desired_page_url_should_be_displayed() throws InterruptedException {
+        Assert.assertTrue(loginPage.verifyValidInvalidLoginWithURL(ConfigReader.initProp().getProperty("qa_dashboard_page_url")));
+    }
+
+    @Then("desired page URL should be displayed for unsuccessful login")
+    public void desired_page_url_should_be_displayed_for_unsuccessful_login() throws InterruptedException {
+        Assert.assertTrue(loginPage.verifyValidInvalidLoginWithURL(ConfigReader.initProp().getProperty("qa_url")));
+    }
 
 }

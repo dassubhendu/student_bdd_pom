@@ -9,9 +9,9 @@ import java.util.Properties;
 
 public class ConfigReader {
 
-    private Properties prop;
+    private static Properties prop;
 
-    public Properties initProp() {
+    public static Properties initProp() {
         prop = new Properties();
         try {
             FileInputStream ip = new FileInputStream("./src/test/resources/config/config.properties");

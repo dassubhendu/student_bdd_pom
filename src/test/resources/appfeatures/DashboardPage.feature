@@ -1,18 +1,9 @@
 Feature: Dashboard page feature
 
 Background:
-  Given user has already logged into application
-  |username|password|
-  |Admin|admin123|
+  Given User successfully login into dashboard page
 
-@dashboard    @Regression
-Scenario: Dashboard page title
-  Given user is on dashboard page
-  Then user gets the title of the page
-  Then page title should be "OrangeHRM"
-
-  @dashboard    @Regression
-Scenario: Cart icon is visible
-  Given user is on dashboard page
-  Then dashboard icon should be visible
+@dashboard    @Regression   @Sanity
+Scenario: Dashboard module icon should be visible
+  Then dashboard module icon is visible
 

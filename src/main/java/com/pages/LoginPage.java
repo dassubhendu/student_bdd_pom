@@ -1,6 +1,6 @@
 package com.pages;
 
-import com.sun.jdi.PrimitiveValue;
+import com.qa.util.ElementUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -8,22 +8,13 @@ public class LoginPage {
 
     private WebDriver driver;
 
-    private static final By USER_NAME = By.name("username");
-    private static final By PASSWORD = By.name("password");
-    private static final By LOGIN_BUTTON = By.xpath("//button[@type='submit']");
-    private static final By LINK_FORGOT_PASSWORD = By.xpath("//p[text()='Forgot your password? ']");
+    private static final By USER_NAME = By.id("email");
+    private static final By PASSWORD = By.id("loginPaswd");
+    private static final By LOGIN_BUTTON = By.xpath("//button[contains(text(),'Login')]");
 
     public LoginPage(WebDriver driver){
         this.driver = driver;
     };
-
-    public String getLoginPageTitle(){
-        return driver.getTitle();
-    }
-
-    public boolean isForgotPasswordLinkExist(){
-        return driver.findElement(LINK_FORGOT_PASSWORD).isDisplayed();
-    }
 
     public void enterUsername(String username){
         driver.findElement(USER_NAME).sendKeys(username);
@@ -33,14 +24,20 @@ public class LoginPage {
         driver.findElement(PASSWORD).sendKeys(password);
     }
 
-    public void clickLoginButton(){
+    public void clickLoginButton() throws InterruptedException {
         driver.findElement(LOGIN_BUTTON).click();
+        Thread.sleep(7000);
     }
 
-    public DashboardPage doLogin(String username, String password){
+    public boolean verifyValidInvalidLoginWithURL(String URL) throws InterruptedException {
+        return driver.getCurrentUrl().equals(URL);
+    }
+
+    public DashboardPage doLogin(String username, String password) throws InterruptedException {
         enterUsername(username);
         enterPassword(password);
         clickLoginButton();
+        Thread.sleep(10000);
         return new DashboardPage(this.driver);
     }
 
