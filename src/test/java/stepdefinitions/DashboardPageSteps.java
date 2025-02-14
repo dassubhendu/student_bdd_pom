@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DashboardPageSteps {
-
+    // Test
     private LoginPage loginPage = new LoginPage(DriverFactory.getDriver());
     private DashboardPage dashboardPage;
 
